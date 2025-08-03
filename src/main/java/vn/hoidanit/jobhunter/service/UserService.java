@@ -1,24 +1,42 @@
 package vn.hoidanit.jobhunter.service;
 
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
     public User handleCreateUser(User user) {
+        User isUserExist = this.userRepository.findUserByEmail(user.getEmail());
+//        if (isUserExist.isPresent()) {
+//            throw new ResponseStatusException(
+//                    HttpStatus.BAD_REQUEST,
+//                    "The user with email " + user.getEmail() + " already exists."
+//            );
+//        } else {
+        String rawPassword = user.getPassword();
+        String hashed = this.passwordEncoder.encode(rawPassword);
+
+        user.setPassword(hashed);
         return this.userRepository.save(user);
+
+//        }
+
     }
 
     public List<User> handleGetAllUser() {
@@ -52,5 +70,9 @@ public class UserService {
     public void handleDeleteUser(long id) {
 
         this.userRepository.deleteById(id);
+    }
+
+    public User handleFindUserByEmail(String email) {
+        return this.userRepository.findUserByEmail(email);
     }
 }
