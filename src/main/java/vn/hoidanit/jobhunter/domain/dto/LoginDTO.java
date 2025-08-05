@@ -1,4 +1,4 @@
-package vn.hoidanit.jobhunter.domain;
+package vn.hoidanit.jobhunter.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
