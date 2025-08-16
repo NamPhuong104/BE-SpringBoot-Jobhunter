@@ -9,10 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.LoginDTO;
 import vn.hoidanit.jobhunter.domain.dto.ResLoginDTO;
@@ -37,7 +34,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     @ApiMessage("Login successfully")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDto) {
 
@@ -48,7 +45,7 @@ public class AuthController {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String access_token = this.securityUtil.createAccessToken(authentication);
+
         ResLoginDTO res = new ResLoginDTO();
 
         User currentUser = this.userService.handleFindUserByEmail(loginDto.getUsername());
@@ -64,6 +61,7 @@ public class AuthController {
             res.setUser(userLogin);
         }
 
+        String access_token = this.securityUtil.createAccessToken(authentication, res.getUser());
         res.setAccessToken(access_token);
 
         // Create refresh token
@@ -77,5 +75,24 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, resCookies.toString()).body(res);
+    }
+
+    @GetMapping("/auth/account")
+    @ApiMessage("Get Account")
+    public ResponseEntity<ResLoginDTO.UserLogin> getAccount() {
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+
+        User currentUser = this.userService.handleFindUserByEmail(email);
+        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin();
+
+        if (currentUser != null) {
+            userLogin.setId(currentUser.getId());
+            userLogin.setName(currentUser.getName());
+            userLogin.setGender(currentUser.getGender());
+            userLogin.setAddress(currentUser.getAddress());
+            userLogin.setAge(currentUser.getAge());
+            userLogin.setEmail(currentUser.getEmail());
+        }
+        return ResponseEntity.ok().body(userLogin);
     }
 }
