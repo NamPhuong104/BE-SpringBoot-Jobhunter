@@ -8,9 +8,9 @@ import vn.hoidanit.jobhunter.util.constant.GenderEnum;
 
 @Getter
 @Setter
-public class RestLoginDTO {
+public class ResLoginDTO {
     private String accessToken;
-    private UserLogin userLogin;
+    private UserLogin user;
 
     @Getter
     @Setter

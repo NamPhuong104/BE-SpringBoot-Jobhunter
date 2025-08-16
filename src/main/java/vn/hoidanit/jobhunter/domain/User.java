@@ -33,5 +33,7 @@ public class User extends AudiTable {
     private int age;
 
     private String address;
+
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
 }

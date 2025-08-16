@@ -113,4 +113,11 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
+    public void handleUpdateUserToken(String refresh_token, String email) {
+        User user = this.userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.OK));
+        user.setRefreshToken(refresh_token);
+        this.userRepository.save(user);
+    }
+
 }

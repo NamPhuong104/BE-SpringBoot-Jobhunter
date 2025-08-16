@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import vn.hoidanit.jobhunter.domain.Company;
@@ -13,8 +12,6 @@ import vn.hoidanit.jobhunter.domain.dto.Meta;
 import vn.hoidanit.jobhunter.domain.dto.company.CompanyDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CompanyService {
