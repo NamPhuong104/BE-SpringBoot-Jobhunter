@@ -1,13 +1,27 @@
 package vn.hoidanit.jobhunter.domain.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import vn.hoidanit.jobhunter.util.constant.GenderEnum;
+
+@Getter
+@Setter
 public class RestLoginDTO {
     private String accessToken;
+    private UserLogin userLogin;
 
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserLogin {
+        private long id;
+        private String name;
+        private String email;
+        private String address;
+        private int age;
+        private GenderEnum gender;
     }
 }
