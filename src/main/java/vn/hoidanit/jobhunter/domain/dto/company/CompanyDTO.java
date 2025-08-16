@@ -5,17 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import vn.hoidanit.jobhunter.util.validation.validation;
 
 
 public class CompanyDTO {
 
     @Setter
     @Getter
-    @GroupSequence({Create.class, validation.NotNullGroup.class, validation.NotBlankGroup.class})
     public static class Create {
-        @NotNull(message = "Trường 'name' không được thiếu", groups = validation.NotNullGroup.class)
-        @NotBlank(message = "Trường 'name' không được để trống", groups = validation.NotBlankGroup.class)
+        @NotNull(message = "Trường 'name' không được thiếu")
+        @NotBlank(message = "Trường 'name' không được để trống!!!")
         private String name;
         private String description;
         private String address;
@@ -24,9 +22,8 @@ public class CompanyDTO {
 
     @Setter
     @Getter
-    @GroupSequence({Update.class, validation.NotNullGroup.class})
     public static class Update {
-        @NotNull(message = "Trường 'id' không được thiếu", groups = validation.NotNullGroup.class)
+        @NotNull(message = "Trường 'id' không được thiếu")
         private Long id;
         private String name;
         private String description;
@@ -36,11 +33,10 @@ public class CompanyDTO {
 
     @Setter
     @Getter
-    @GroupSequence({Delete.class, validation.NotNullGroup.class, validation.NotBlankGroup.class})
     public static class Delete {
 
-        @NotNull(message = "Trường 'id' không được thiếu", groups = validation.NotNullGroup.class)
-        @NotBlank(message = "Trường 'id' không được để trống", groups = validation.NotBlankGroup.class)
+        @NotNull(message = "Trường 'id' không được thiếu")
+        @NotBlank(message = "Trường 'id' không được để trống")
         private Long id;
     }
 

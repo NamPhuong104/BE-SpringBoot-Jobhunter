@@ -8,12 +8,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.hoidanit.jobhunter.domain.dto.LoginDTO;
 import vn.hoidanit.jobhunter.domain.dto.RestLoginDTO;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
+import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 
 @RestController
+@RequestMapping("/api/v1")
 public class AuthController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -25,6 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @ApiMessage("Login successfully")
     public ResponseEntity<RestLoginDTO> login(@Valid @RequestBody LoginDTO loginDto) {
 
         //Nạp input gồm username/password vào Security

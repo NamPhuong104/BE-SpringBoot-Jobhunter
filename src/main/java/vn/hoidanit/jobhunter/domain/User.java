@@ -1,48 +1,37 @@
 package vn.hoidanit.jobhunter.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import vn.hoidanit.jobhunter.util.AudiTable;
+import vn.hoidanit.jobhunter.util.constant.GenderEnum;
+
+import java.time.Instant;
 
 @Entity
 @Table(name = "users")
-public class User {
+@Getter
+@Setter
+public class User extends AudiTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @JsonIgnore
     private String password;
 
-    public long getId() {
-        return id;
-    }
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    private int age;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String address;
+    private String refreshToken;
 }

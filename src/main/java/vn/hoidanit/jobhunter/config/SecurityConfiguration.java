@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         authz ->
                                 // prettier-ignore
-                                authz.requestMatchers("/", "/login").permitAll().anyRequest().authenticated())
+                                authz.requestMatchers("/", "/api/v1/login").permitAll().anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()).authenticationEntryPoint(customAuthenticationEntryPoint))
 //                .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()).accessDeniedHandler(new BearerTokenAccessDeniedHandler()))
                 .formLogin(f -> f.disable())
