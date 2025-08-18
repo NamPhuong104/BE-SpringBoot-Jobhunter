@@ -146,4 +146,26 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, resCookies.toString()).body(res);
     }
+
+    @GetMapping("/auth/logout")
+    @ApiMessage("Logout User")
+    public ResponseEntity<Void> logout(@CookieValue(name = "refresh_token") String refresh_token) throws IdInvalidException {
+//        return ResponseEntity.ok(refresh_token);
+        if (refresh_token.equals("")) {
+            throw new IdInvalidException("Bạn không có refresh token ở cookie");
+        }
+
+        Jwt decoded = this.securityUtil.checkValidRefreshToken(refresh_token);
+        String email = decoded.getSubject();
+
+        User currentUser = this.userService.getUserByRefreshTokenAndEmail(refresh_token, email);
+        if (currentUser == null) {
+            throw new IdInvalidException("Refresh token không hợp lệ");
+        }
+
+        this.userService.handleUpdateUserToken(null, email);
+
+        ResponseCookie resCookies = ResponseCookie.from("refresh_token", null).maxAge(0).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, resCookies.toString()).body(null);
+    }
 }
