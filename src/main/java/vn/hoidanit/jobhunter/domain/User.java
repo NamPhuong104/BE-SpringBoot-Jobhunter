@@ -34,6 +34,7 @@ public class User extends AudiTable {
 
     private String address;
 
+    @JsonIgnore
     @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
 }

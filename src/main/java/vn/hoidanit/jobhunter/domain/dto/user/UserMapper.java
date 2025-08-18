@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.UserResponseDTO;
+import vn.hoidanit.jobhunter.domain.response.UserResponseDTO;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vn.hoidanit.jobhunter.domain.Company;
-import vn.hoidanit.jobhunter.domain.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.domain.dto.company.CompanyDTO;
 import vn.hoidanit.jobhunter.domain.dto.company.CompanyMapper;
 import vn.hoidanit.jobhunter.service.CompanyService;
@@ -62,6 +62,6 @@ public class CompanyController {
     @ApiMessage("Delete company")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         companyService.handleDeleteCompany(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(null);
     }
 }
