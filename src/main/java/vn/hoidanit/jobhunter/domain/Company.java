@@ -8,6 +8,7 @@ import vn.hoidanit.jobhunter.util.AudiTable;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "companies")
@@ -27,6 +28,8 @@ public class Company extends AudiTable {
     private String address;
 
     private String logo;
-    
+
+    @OneToMany(mappedBy = "company")
+    List<User> users;
 
 }
