@@ -3,13 +3,15 @@ package vn.hoidanit.jobhunter.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.company.CompanyDTO;
+import vn.hoidanit.jobhunter.domain.response.company.ResCreateCompanyDTO;
+import vn.hoidanit.jobhunter.domain.response.company.ResUpdateCompanyDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
+
+import java.time.Instant;
+import java.util.Optional;
 
 
 @Service
@@ -21,9 +23,27 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    public Company handleCreateCompany(Company company) {
-        return this.companyRepository.save(company);
+    public ResCreateCompanyDTO convertToResCreateComDTO(Company company) {
+        ResCreateCompanyDTO res = new ResCreateCompanyDTO();
+        res.setName(company.getName());
+        res.setLogo(company.getLogo());
+        res.setAddress(company.getAddress());
+        res.setDescription(company.getDescription());
+        res.setCreatedAt(company.getCreatedAt());
+        return res;
     }
+
+    public ResUpdateCompanyDTO convertToResUpdateComDTO(Company company) {
+        ResUpdateCompanyDTO res = new ResUpdateCompanyDTO();
+        res.setId(company.getId());
+        res.setName(company.getName());
+        res.setLogo(company.getLogo());
+        res.setAddress(company.getAddress());
+        res.setDescription(company.getDescription());
+        res.setUpdatedAt(company.getUpdatedAt());
+        return res;
+    }
+
 
     public ResultPaginationDTO handleGetAll(Specification<Company> spec, Pageable pageable) {
         Page<Company> pageCompany = this.companyRepository.findAll(spec, pageable);
@@ -44,10 +64,18 @@ public class CompanyService {
     }
 
     public Company handleFindOneCompanyById(Long id) {
-        return this.companyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Không tìm thấy company với id: " + id));
+        Optional<Company> res = this.companyRepository.findById(id);
+        if (res.isPresent()) {
+            return res.get();
+        }
+        return null;
     }
 
-    public Company handleUpdateCompany(CompanyDTO.Update company) {
+    public Company handleCreateCompany(Company company) {
+        return this.companyRepository.save(company);
+    }
+
+    public Company handleUpdateCompany(Company company) {
         Company companyExist = this.handleFindOneCompanyById(company.getId());
 
         if (companyExist != null) {
@@ -55,17 +83,12 @@ public class CompanyService {
             companyExist.setLogo(company.getLogo());
             companyExist.setDescription(company.getDescription());
             companyExist.setAddress(company.getAddress());
-
             companyExist = this.companyRepository.save(companyExist);
-
         }
         return companyExist;
     }
 
     public void handleDeleteCompany(Long id) {
-        Company companyExist = this.handleFindOneCompanyById(id);
-        if (companyExist != null) {
-            this.companyRepository.deleteById(companyExist.getId());
-        }
+        this.companyRepository.deleteById(id);
     }
 }

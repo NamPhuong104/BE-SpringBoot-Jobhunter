@@ -1,10 +1,10 @@
-package vn.hoidanit.jobhunter.domain.response;
+package vn.hoidanit.jobhunter.domain.response.company;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.hoidanit.jobhunter.util.constant.GenderEnum;
 
 import java.time.Instant;
 
@@ -12,12 +12,10 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResCreateUserDTO {
-    private long id;
+public class ResCreateCompanyDTO {
     private String name;
-    private String email;
-    private GenderEnum gender;
+    private String description;
     private String address;
-    private int age;
+    private String logo;
     private Instant createdAt;
 }

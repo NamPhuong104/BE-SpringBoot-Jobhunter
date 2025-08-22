@@ -7,13 +7,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import vn.hoidanit.jobhunter.domain.response.*;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.user.UserDTO;
-import vn.hoidanit.jobhunter.domain.dto.user.UserMapper;
+import vn.hoidanit.jobhunter.domain.response.user.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.user.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.user.ResUserDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
@@ -23,12 +22,10 @@ import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 @RequestMapping("/api/v1")
 public class UserController {
     private final UserService userService;
-    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -87,7 +84,6 @@ public class UserController {
 
         if (existing == null) {
             throw new IdInvalidException("User với id:  " + id + " không tồn tại !!!!!");
-
         }
         this.userService.handleDeleteUser(id);
         return ResponseEntity.ok(null);

@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import vn.hoidanit.jobhunter.domain.response.*;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.user.UserMapper;
+import vn.hoidanit.jobhunter.domain.response.user.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.user.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.user.ResUserDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
 import java.util.List;
@@ -19,13 +21,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
     private final CompanyService companyService;
 
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, CompanyService companyService) {
+    public UserService(UserRepository userRepository, CompanyService companyService) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
         this.companyService = companyService;
     }
 

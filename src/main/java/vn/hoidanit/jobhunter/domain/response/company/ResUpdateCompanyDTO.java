@@ -1,22 +1,21 @@
-package vn.hoidanit.jobhunter.domain.response;
+package vn.hoidanit.jobhunter.domain.response.company;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.hoidanit.jobhunter.util.constant.GenderEnum;
 
 import java.time.Instant;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResUpdateUserDTO {
+public class ResUpdateCompanyDTO {
     private long id;
     private String name;
-    private GenderEnum gender;
+    private String description;
     private String address;
-    private int age;
+    private String logo;
     private Instant updatedAt;
 }
