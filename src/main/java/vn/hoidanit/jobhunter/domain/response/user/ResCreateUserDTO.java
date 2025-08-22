@@ -20,4 +20,14 @@ public class ResCreateUserDTO {
     private String address;
     private int age;
     private Instant createdAt;
+    private CompanyDTO company;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CompanyDTO {
+        private long id;
+        private String name;
+    }
 }

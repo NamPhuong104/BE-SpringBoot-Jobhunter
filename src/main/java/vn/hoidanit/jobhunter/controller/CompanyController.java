@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.response.company.ResCompanyDTO;
 import vn.hoidanit.jobhunter.domain.response.company.ResCreateCompanyDTO;
 import vn.hoidanit.jobhunter.domain.response.company.ResUpdateCompanyDTO;
 import vn.hoidanit.jobhunter.service.CompanyService;
@@ -36,12 +37,12 @@ public class CompanyController {
 
     @GetMapping("/companies/{id}")
     @ApiMessage("Get company by id")
-    public ResponseEntity<Company> GetCompanyById(@Valid @PathVariable("id") Long id) throws IdInvalidException {
+    public ResponseEntity<ResCompanyDTO> GetCompanyById(@Valid @PathVariable("id") Long id) throws IdInvalidException {
         Company res = this.companyService.handleFindOneCompanyById(id);
-        if (res != null) {
+        if (res == null) {
             throw new IdInvalidException("Công ty với id: " + id + " Không tồn tại");
         }
-        return ResponseEntity.ok().body(res);
+        return ResponseEntity.ok().body(this.companyService.convertToResCompanyDTO(res));
     }
 
 

@@ -5,22 +5,45 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.Company;
+import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.response.company.ResCompanyDTO;
 import vn.hoidanit.jobhunter.domain.response.company.ResCreateCompanyDTO;
 import vn.hoidanit.jobhunter.domain.response.company.ResUpdateCompanyDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
+import vn.hoidanit.jobhunter.repository.UserRepository;
 
-import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository) {
         this.companyRepository = companyRepository;
+        this.userRepository = userRepository;
+    }
+
+    public ResCompanyDTO convertToResCompanyDTO(Company company) {
+        ResCompanyDTO res = new ResCompanyDTO();
+        res.setId(company.getId());
+        res.setLogo(company.getLogo());
+        res.setDescription(company.getDescription());
+        res.setName(company.getName());
+        res.setAddress(company.getAddress());
+        res.setCreatedAt(company.getCreatedAt());
+        res.setUpdatedAt(company.getUpdatedAt());
+
+        if (company.getUsers() != null) {
+            List<ResCompanyDTO.UserSummaryDTO> userSummaryDTO = company.getUsers().stream().map(user -> new ResCompanyDTO.UserSummaryDTO(user.getId(), user.getName(), user.getEmail())).collect(Collectors.toList());
+            res.setUsers(userSummaryDTO);
+        }
+        return res;
     }
 
     public ResCreateCompanyDTO convertToResCreateComDTO(Company company) {
@@ -58,7 +81,9 @@ public class CompanyService {
         mt.setTotal(pageCompany.getTotalElements());
 
         rs.setMeta(mt);
-        rs.setResult(pageCompany.getContent());
+        List<ResCompanyDTO> listCompanyDTO = pageCompany.getContent().stream().map(this::convertToResCompanyDTO).collect(Collectors.toList());
+
+        rs.setResult(listCompanyDTO);
 
         return rs;
     }
@@ -89,6 +114,11 @@ public class CompanyService {
     }
 
     public void handleDeleteCompany(Long id) {
+        Company currentCompany = this.handleFindOneCompanyById(id);
+        if (currentCompany != null) {
+            List<User> userList = this.userRepository.findUserByCompany(currentCompany);
+            this.userRepository.deleteAll(userList);
+        }
         this.companyRepository.deleteById(id);
     }
 }

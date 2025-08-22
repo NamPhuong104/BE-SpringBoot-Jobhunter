@@ -19,4 +19,14 @@ public class ResUpdateUserDTO {
     private String address;
     private int age;
     private Instant updatedAt;
+    private CompanyDTO company;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CompanyDTO {
+        private long id;
+        private String name;
+    }
 }
