@@ -2,6 +2,7 @@ package vn.hoidanit.jobhunter.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
@@ -17,6 +18,8 @@ public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotEmpty(message = "name không được để trống")
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "skills")

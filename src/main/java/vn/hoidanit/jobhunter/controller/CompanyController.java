@@ -9,14 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.response.company.ResCompanyDTO;
 import vn.hoidanit.jobhunter.domain.response.company.ResCreateCompanyDTO;
 import vn.hoidanit.jobhunter.domain.response.company.ResUpdateCompanyDTO;
 import vn.hoidanit.jobhunter.service.CompanyService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
