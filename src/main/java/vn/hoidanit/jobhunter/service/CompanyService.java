@@ -81,9 +81,10 @@ public class CompanyService {
         mt.setTotal(pageCompany.getTotalElements());
 
         rs.setMeta(mt);
-        List<ResCompanyDTO> listCompanyDTO = pageCompany.getContent().stream().map(this::convertToResCompanyDTO).collect(Collectors.toList());
+        rs.setResult(pageCompany);
+//        List<ResCompanyDTO> listCompanyDTO = pageCompany.getContent().stream().map(this::convertToResCompanyDTO).collect(Collectors.toList());
 
-        rs.setResult(listCompanyDTO);
+        rs.setResult(pageCompany.get());
 
         return rs;
     }

@@ -37,12 +37,12 @@ public class CompanyController {
 
     @GetMapping("/companies/{id}")
     @ApiMessage("Get company by id")
-    public ResponseEntity<ResCompanyDTO> GetCompanyById(@Valid @PathVariable("id") Long id) throws IdInvalidException {
+    public ResponseEntity<Company> GetCompanyById(@Valid @PathVariable("id") Long id) throws IdInvalidException {
         Company res = this.companyService.handleFindOneCompanyById(id);
         if (res == null) {
             throw new IdInvalidException("Công ty với id: " + id + " Không tồn tại");
         }
-        return ResponseEntity.ok().body(this.companyService.convertToResCompanyDTO(res));
+        return ResponseEntity.ok().body(res);
     }
 
 
