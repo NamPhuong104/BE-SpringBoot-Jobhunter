@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import vn.hoidanit.jobhunter.controller.SkillController;
 import vn.hoidanit.jobhunter.domain.Skill;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.SkillRepository;
@@ -62,6 +63,12 @@ public class SkillService {
     }
 
     public void handleDeleteSkill(Long id) {
-        this.skillRepository.deleteById(id);
+        Skill skillOptional = this.handleFineOneSkill(id);
+
+        if (skillOptional != null) {
+            skillOptional.getJobs().forEach(job -> job.getSkills().remove(skillOptional));
+            this.skillRepository.delete(skillOptional);
+        }
+        
     }
 }

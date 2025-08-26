@@ -6,11 +6,6 @@ import org.springframework.stereotype.Repository;
 import vn.hoidanit.jobhunter.domain.Job;
 import vn.hoidanit.jobhunter.domain.Skill;
 
-import java.util.List;
-
 @Repository
-public interface SkillRepository extends JpaRepository<Skill, Long>, JpaSpecificationExecutor<Skill> {
-    boolean existsByName(String name);
-
-    List<Skill> findAllByIdIn(List<Long> ids);
+public interface JobRepository extends JpaRepository<Job, Long>, JpaSpecificationExecutor<Job> {
 }

@@ -31,6 +31,8 @@ public class UserService {
 
     public ResUserDTO convertToResUserDTO(User user) {
         ResUserDTO res = new ResUserDTO();
+        ResUserDTO.CompanyDTO companyDTO = new ResUserDTO.CompanyDTO();
+
         res.setId(user.getId());
         res.setEmail(user.getEmail());
         res.setName(user.getName());
@@ -41,7 +43,6 @@ public class UserService {
         res.setGender(user.getGender());
 
         if (user.getCompany() != null) {
-            ResUserDTO.CompanyDTO companyDTO = new ResUserDTO.CompanyDTO();
             companyDTO.setId(user.getCompany().getId());
             companyDTO.setName(user.getCompany().getName());
             res.setCompany(companyDTO);

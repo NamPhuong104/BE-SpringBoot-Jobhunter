@@ -61,6 +61,7 @@ public class SkillController {
     public ResponseEntity<Void> deleteSkill(@Valid @PathVariable("id") Long id) throws IdInvalidException {
         Skill isExistSkill = this.skillService.handleFineOneSkill(id);
         if (isExistSkill == null) throw new IdInvalidException("Id không tồn tại !!!");
+        this.skillService.handleDeleteSkill(id);
         return ResponseEntity.ok(null);
     }
 }
