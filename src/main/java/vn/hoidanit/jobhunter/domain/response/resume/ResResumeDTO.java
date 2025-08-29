@@ -22,6 +22,7 @@ public class ResResumeDTO {
     private ResumeStateEnum status;
     private User user;
     private Job job;
+    private String companyName;
     private Instant createdAt;
     private Instant updatedAt;
 

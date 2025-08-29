@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.util.constant.LevelEnum;
 
 import java.time.Instant;
@@ -25,7 +24,7 @@ public class ResJobDTO {
     private Instant startDate;
     private Instant endDate;
     private boolean active;
-    private Company company;
+    private CompanyDTO company;
     private Instant createdAt;
     private Instant updatedAt;
     private List<SkillDTO> skills;
@@ -37,5 +36,15 @@ public class ResJobDTO {
     public static class SkillDTO {
         private long id;
         private String name;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CompanyDTO {
+        private long id;
+        private String name;
+        private String logo;
     }
 }

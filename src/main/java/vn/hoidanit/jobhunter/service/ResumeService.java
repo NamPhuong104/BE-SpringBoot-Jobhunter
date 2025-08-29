@@ -35,6 +35,7 @@ public class ResumeService {
 //        res.setUser(new ResResumeDTO.User(resume.getUser().getId(), resume.getUser().getName()));
 //        res.setJob(new ResResumeDTO.Job(resume.getJob().getId(), resume.getJob().getName()));
 
+
         if (resume.getUser() != null) {
             ResResumeDTO.User user = new ResResumeDTO.User();
             user.setId(resume.getUser().getId());
@@ -45,6 +46,7 @@ public class ResumeService {
             ResResumeDTO.Job job = new ResResumeDTO.Job();
             job.setId(resume.getJob().getId());
             job.setName(resume.getJob().getName());
+            res.setCompanyName(resume.getJob().getCompany().getName());
             res.setJob(job);
         }
         return res;

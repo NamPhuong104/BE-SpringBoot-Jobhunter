@@ -25,7 +25,16 @@ public class ResUpdateJobDTO {
     private Instant startDate;
     private Instant endDate;
     private boolean active;
-    private Company company;
+    private CompanyDTO company;
     private Instant updatedAt;
     private List<String> skills;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CompanyDTO {
+        private long id;
+        private String name;
+    }
 }

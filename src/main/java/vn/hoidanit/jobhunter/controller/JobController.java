@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.Job;
 import vn.hoidanit.jobhunter.domain.Skill;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
@@ -13,6 +14,7 @@ import vn.hoidanit.jobhunter.domain.response.job.ResCreateJobDTO;
 import vn.hoidanit.jobhunter.domain.response.job.ResJobDTO;
 import vn.hoidanit.jobhunter.domain.response.job.ResUpdateJobDTO;
 import vn.hoidanit.jobhunter.repository.SkillRepository;
+import vn.hoidanit.jobhunter.service.CompanyService;
 import vn.hoidanit.jobhunter.service.JobService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
@@ -24,8 +26,10 @@ import java.util.List;
 public class JobController {
     private final JobService jobService;
     private final SkillRepository skillRepository;
+    private final CompanyService companyService;
 
-    public JobController(JobService jobService, SkillRepository skillRepository) {
+    public JobController(JobService jobService, SkillRepository skillRepository, CompanyService companyService) {
+        this.companyService = companyService;
         this.skillRepository = skillRepository;
         this.jobService = jobService;
     }
@@ -62,6 +66,10 @@ public class JobController {
     public ResponseEntity<ResUpdateJobDTO> UpdateJob(@RequestBody Job reqJob) throws IdInvalidException {
         Job existJob = this.jobService.handleFindOneJob(reqJob.getId());
         if (existJob == null) throw new IdInvalidException("Id job không tồn tại");
+
+        Company existCompany = this.companyService.handleFindOneCompanyById(reqJob.getCompany().getId());
+        if (existCompany == null) throw new IdInvalidException("Công ty không tồn tại");
+        reqJob.setCompany(existCompany);
 
         Job res = this.jobService.handleUpdateJob(reqJob);
 

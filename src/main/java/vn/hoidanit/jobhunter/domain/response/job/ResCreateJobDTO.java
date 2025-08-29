@@ -25,7 +25,7 @@ public class ResCreateJobDTO {
     private Instant endDate;
     private boolean active;
     private Instant createdAt;
-    private Company company;
+    private CompanyDTO company;
 
     private List<SkillDTO> skills;
 
@@ -35,6 +35,15 @@ public class ResCreateJobDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SkillDTO {
+        private long id;
+        private String name;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CompanyDTO {
         private long id;
         private String name;
     }

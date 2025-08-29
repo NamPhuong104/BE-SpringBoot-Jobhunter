@@ -42,8 +42,10 @@ public class JobService {
         res.setEndDate(job.getEndDate());
         res.setActive(job.isActive());
         res.setCreatedAt(job.getCreatedAt());
+        res.setUpdatedAt(job.getUpdatedAt());
 
-        if (job.getCompany() != null) res.setCompany(job.getCompany());
+        if (job.getCompany() != null)
+            res.setCompany(new ResJobDTO.CompanyDTO(job.getCompany().getId(), job.getCompany().getName(), job.getCompany().getLogo()));
 
         if (job.getSkills() != null) {
             List<ResJobDTO.SkillDTO> skillSummaryDTO = job.getSkills().stream().map(skill -> new ResJobDTO.SkillDTO(skill.getId(), skill.getName())).
@@ -67,7 +69,8 @@ public class JobService {
         res.setActive(job.isActive());
         res.setCreatedAt(job.getCreatedAt());
 
-        if (job.getCompany() != null) res.setCompany(job.getCompany());
+        if (job.getCompany() != null)
+            res.setCompany(new ResCreateJobDTO.CompanyDTO(job.getCompany().getId(), job.getCompany().getName()));
 
         if (job.getSkills() != null) {
             List<ResCreateJobDTO.SkillDTO> skillSummaryDTO = job.getSkills().stream().map(skill -> new ResCreateJobDTO.SkillDTO(skill.getId(), skill.getName())).collect(Collectors.toList());
@@ -91,7 +94,9 @@ public class JobService {
         res.setActive(job.isActive());
         res.setUpdatedAt(job.getUpdatedAt());
 
-        if (job.getCompany() != null) res.setCompany(job.getCompany());
+        if (job.getCompany() != null)
+            res.setCompany(new ResUpdateJobDTO.CompanyDTO(job.getCompany().getId(), job.getCompany().getName()));
+
         if (job.getSkills() != null) {
             List<String> skillNames = job.getSkills()
                     .stream()
