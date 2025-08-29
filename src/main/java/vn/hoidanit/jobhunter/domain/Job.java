@@ -45,7 +45,7 @@ public class Job {
 
     @OneToMany(mappedBy = "job", fetch = FetchType.LAZY)
     @JsonIgnore
-    private Resume resumes;
+    List<Resume> resumes;
 
     private Instant createdAt;
     private Instant updatedAt;

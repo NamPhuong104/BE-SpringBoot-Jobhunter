@@ -1,9 +1,7 @@
 package vn.hoidanit.jobhunter.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.constant.ResumeStateEnum;
@@ -16,6 +14,8 @@ import java.time.Instant;
 @Entity
 @Table(name = "resumes")
 public class Resume {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String email;
     private String url;
