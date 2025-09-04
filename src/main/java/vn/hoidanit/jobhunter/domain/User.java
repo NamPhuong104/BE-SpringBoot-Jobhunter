@@ -50,6 +50,11 @@ public class User {
     List<Resume> resumes;
 
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+
     @JsonIgnore
     @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;

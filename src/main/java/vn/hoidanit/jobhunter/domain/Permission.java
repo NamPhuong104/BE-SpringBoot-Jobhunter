@@ -2,6 +2,7 @@ package vn.hoidanit.jobhunter.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
@@ -19,9 +20,16 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull(message = "name không được để trống")
     private String name;
+
+    @NotNull(message = "apiPath không được để trống")
     private String apiPath;
+
+    @NotNull(message = "method không được để trống")
     private String method;
+
+    @NotNull(message = "module không được để trống")
     private String module;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "permissions")

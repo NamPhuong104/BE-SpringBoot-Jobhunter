@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.hoidanit.jobhunter.domain.Role;
 import vn.hoidanit.jobhunter.util.constant.GenderEnum;
 
 @Getter
@@ -25,6 +26,7 @@ public class ResLoginDTO {
         private String address;
         private int age;
         private GenderEnum gender;
+        private Role role;
     }
 
     @Setter
@@ -33,5 +35,15 @@ public class ResLoginDTO {
     @NoArgsConstructor
     public static class UserGetAccount {
         private UserLogin user;
+    }
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserInsideToken {
+        private long id;
+        private String email;
+        private String name;
     }
 }

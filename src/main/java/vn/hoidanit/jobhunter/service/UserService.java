@@ -48,6 +48,11 @@ public class UserService {
             res.setCompany(companyDTO);
         }
 
+        if (user.getRole() != null) {
+            ResUserDTO.RoleDTO roleDTO = new ResUserDTO.RoleDTO(user.getRole().getId(), user.getRole().getName());
+            res.setRole(roleDTO);
+        }
+
         return res;
     }
 
@@ -68,6 +73,11 @@ public class UserService {
             res.setCompany(companyDTO);
         }
 
+        if (user.getRole() != null) {
+            ResCreateUserDTO.RoleDTO roleDTO = new ResCreateUserDTO.RoleDTO(user.getRole().getId(), user.getRole().getName());
+            res.setRole(roleDTO);
+        }
+
         return res;
     }
 
@@ -85,6 +95,11 @@ public class UserService {
             companyDTO.setId(user.getCompany().getId());
             companyDTO.setName(user.getCompany().getName());
             res.setCompany(companyDTO);
+        }
+
+        if (user.getRole() != null) {
+            ResUpdateUserDTO.RoleDTO roleDTO = new ResUpdateUserDTO.RoleDTO(user.getRole().getId(), user.getRole().getName());
+            res.setRole(roleDTO);
         }
 
         return res;
@@ -121,24 +136,7 @@ public class UserService {
         rs.setMeta(mt);
         rs.setResult(pageUser.getContent());
 
-        List<ResUserDTO> listUser = pageUser.getContent().stream().map(item -> {
-            ResUserDTO.CompanyDTO companyDTO = new ResUserDTO.CompanyDTO();
-            if (item.getCompany() != null) {
-                companyDTO = new ResUserDTO.CompanyDTO(item.getCompany().getId(), item.getCompany().getName());
-            }
-
-            return new ResUserDTO(
-                    item.getId(),
-                    item.getEmail(),
-                    item.getName(),
-                    item.getGender(),
-                    item.getAddress(),
-                    item.getAge(),
-                    item.getCreatedAt(),
-                    item.getUpdatedAt(),
-                    companyDTO
-            );
-        }).collect(Collectors.toList());
+        List<ResUserDTO> listUser = pageUser.getContent().stream().map(item -> this.convertToResUserDTO(item)).collect(Collectors.toList());
 
         rs.setResult(listUser);
         return rs;
@@ -156,6 +154,7 @@ public class UserService {
             user.setAge(reqData.getAge());
             user.setName(reqData.getName());
             user.setCompany(reqData.getCompany());
+            user.setRole(reqData.getRole());
         }
 
         user = this.userRepository.save(user);

@@ -21,12 +21,22 @@ public class ResCreateUserDTO {
     private int age;
     private Instant createdAt;
     private CompanyDTO company;
+    private RoleDTO role;
 
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CompanyDTO {
+        private long id;
+        private String name;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RoleDTO {
         private long id;
         private String name;
     }

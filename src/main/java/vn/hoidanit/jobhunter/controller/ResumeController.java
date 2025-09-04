@@ -48,6 +48,12 @@ public class ResumeController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
+    @PostMapping("/resumes/by-user")
+    @ApiMessage("Get list resume by user")
+    public ResponseEntity<ResultPaginationDTO> fetchResumeByUser(Pageable pageable) {
+        return ResponseEntity.ok().body(this.resumeService.fetchResumeByUser(pageable));
+    }
+
     @PostMapping("/resumes")
     @ApiMessage("Create resume")
     public ResponseEntity<ResCreateResumeDTO> createResume(@Valid @RequestBody Resume reqData) throws IdInvalidException {

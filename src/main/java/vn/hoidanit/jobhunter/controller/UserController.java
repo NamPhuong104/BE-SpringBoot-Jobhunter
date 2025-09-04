@@ -1,6 +1,7 @@
 package vn.hoidanit.jobhunter.controller;
 
 import com.turkraft.springfilter.boot.Filter;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -9,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import vn.hoidanit.jobhunter.domain.Company;
+import vn.hoidanit.jobhunter.domain.Role;
 import vn.hoidanit.jobhunter.domain.response.*;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.response.user.ResCreateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.user.ResUpdateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.user.ResUserDTO;
 import vn.hoidanit.jobhunter.service.CompanyService;
+import vn.hoidanit.jobhunter.service.RoleService;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
@@ -26,11 +29,13 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final CompanyService companyService;
+    private final RoleService roleService;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder, CompanyService companyService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, CompanyService companyService, RoleService roleService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.companyService = companyService;
+        this.roleService = roleService;
     }
 
 
@@ -57,16 +62,21 @@ public class UserController {
 
         boolean isEmailExist = userService.isEmailExist(userData.getEmail());
         Company isCompanyExist = companyService.handleFindOneCompanyById(userData.getCompany().getId());
+        Role isRoleExist = roleService.handleGetRoleById(userData.getRole().getId());
 
         if (isCompanyExist == null) throw new IdInvalidException("Id company không tồn tại:");
 
         if (isEmailExist) {
             throw new IdInvalidException("Email " + userData.getEmail() + " đã tồn tại, vui lòng sử dụng email khác");
         }
+
+        if (isRoleExist == null) throw new IdInvalidException("Role không tồn tại !!!!");
+
         String hashPassword = this.passwordEncoder.encode(userData.getPassword());
 
         userData.setPassword(hashPassword);
         userData.setCompany(isCompanyExist);
+        userData.setRole(isRoleExist);
 
         User res = this.userService.handleCreateUser(userData);
 
@@ -77,9 +87,14 @@ public class UserController {
     @ApiMessage("Update user")
     public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody User reqData) throws IdInvalidException {
         Company isCompanyExist = companyService.handleFindOneCompanyById(reqData.getCompany().getId());
+        Role isRoleExist = roleService.handleGetRoleById(reqData.getRole().getId());
+
         if (isCompanyExist == null) throw new IdInvalidException("Id company không tồn tại:");
+        if (isRoleExist == null) throw new IdInvalidException("Role không tồn tại !!!!");
 
         reqData.setCompany(isCompanyExist);
+        reqData.setRole(isRoleExist);
+
         User existUser = this.userService.handleUpdateUser(reqData);
         if (existUser == null) {
             throw new IdInvalidException("User với id:  " + reqData.getId() + " không tồn tại !!!!!");

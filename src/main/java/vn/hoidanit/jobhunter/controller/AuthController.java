@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    @ApiMessage("Login successfully")
+    @ApiMessage("Login")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO loginDto) {
 
         //Nạp input gồm username/password vào Security
@@ -58,12 +58,13 @@ public class AuthController {
                     currentUser.getEmail(),
                     currentUser.getAddress(),
                     currentUser.getAge(),
-                    currentUser.getGender()
+                    currentUser.getGender(),
+                    currentUser.getRole()
             );
             res.setUser(userLogin);
         }
 
-        String access_token = this.securityUtil.createAccessToken(authentication.getName(), res.getUser());
+        String access_token = this.securityUtil.createAccessToken(authentication.getName(), res);
         res.setAccessToken(access_token);
 
         // Create refresh token
@@ -96,6 +97,7 @@ public class AuthController {
             userLogin.setAge(currentUser.getAge());
             userLogin.setEmail(currentUser.getEmail());
             userGetAccount.setUser(userLogin);
+            userLogin.setRole(currentUser.getRole());
         }
         return ResponseEntity.ok().body(userGetAccount);
     }
@@ -128,12 +130,13 @@ public class AuthController {
                     currentUserDB.getEmail(),
                     currentUserDB.getAddress(),
                     currentUserDB.getAge(),
-                    currentUserDB.getGender()
+                    currentUserDB.getGender(),
+                    currentUserDB.getRole()
             );
             res.setUser(userLogin);
         }
 
-        String access_token = this.securityUtil.createAccessToken(email, res.getUser());
+        String access_token = this.securityUtil.createAccessToken(email, res);
         res.setAccessToken(access_token);
 
         // Create refresh token
