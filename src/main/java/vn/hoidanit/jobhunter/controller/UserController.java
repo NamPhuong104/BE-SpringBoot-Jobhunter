@@ -59,24 +59,39 @@ public class UserController {
     @PostMapping("/users")
     @ApiMessage("Create user")
     public ResponseEntity<ResCreateUserDTO> createNewUser(@Valid @RequestBody User userData) throws IdInvalidException {
-
         boolean isEmailExist = userService.isEmailExist(userData.getEmail());
-        Company isCompanyExist = companyService.handleFindOneCompanyById(userData.getCompany().getId());
-        Role isRoleExist = roleService.handleGetRoleById(userData.getRole().getId());
 
-        if (isCompanyExist == null) throw new IdInvalidException("Id company không tồn tại:");
+        // Check company
+        Long companyId = null;
+        if (userData.getCompany() != null) {
+            companyId = userData.getCompany().getId();
+        }
+
+        Company isCompanyExist = null;
+        if (companyId != null) {
+            isCompanyExist = companyService.handleFindOneCompanyById(userData.getCompany().getId());
+            if (isCompanyExist == null) {
+                throw new IdInvalidException("Id company không tồn tại !!!");
+            } else userData.setCompany(isCompanyExist);
+        }
+
+        // Check role
+        Long roleId = null;
+        if (userData.getRole() != null) roleId = userData.getRole().getId();
+
+        Role isRoleExist = null;
+        if (roleId != null) {
+            isRoleExist = roleService.handleGetRoleById(roleId);
+            if (isRoleExist == null) throw new IdInvalidException("Role không tồn tại !!!!");
+            else userData.setRole(isRoleExist);
+        }
 
         if (isEmailExist) {
             throw new IdInvalidException("Email " + userData.getEmail() + " đã tồn tại, vui lòng sử dụng email khác");
         }
 
-        if (isRoleExist == null) throw new IdInvalidException("Role không tồn tại !!!!");
-
         String hashPassword = this.passwordEncoder.encode(userData.getPassword());
-
         userData.setPassword(hashPassword);
-        userData.setCompany(isCompanyExist);
-        userData.setRole(isRoleExist);
 
         User res = this.userService.handleCreateUser(userData);
 

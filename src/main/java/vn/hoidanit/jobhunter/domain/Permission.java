@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "permissions")
+@NoArgsConstructor
 public class Permission {
 
     @Id
@@ -35,6 +37,13 @@ public class Permission {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "permissions")
     @JsonIgnore
     private List<Role> role;
+
+    public Permission(String name, String apiPath, String method, String module) {
+        this.name = name;
+        this.apiPath = apiPath;
+        this.method = method;
+        this.module = module;
+    }
 
     private Instant createdAt;
     private Instant updatedAt;
