@@ -65,10 +65,11 @@ public class SkillService {
     public void handleDeleteSkill(Long id) {
         Skill skillOptional = this.handleFineOneSkill(id);
 
+        // Delete job and subscriber (inside job_skill and subscriber_skill table)
         if (skillOptional != null) {
             skillOptional.getJobs().forEach(job -> job.getSkills().remove(skillOptional));
+            skillOptional.getSubscribers().forEach(subs -> subs.getSkills().remove(skillOptional));
             this.skillRepository.delete(skillOptional);
         }
-        
     }
 }
