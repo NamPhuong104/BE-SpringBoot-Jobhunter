@@ -103,7 +103,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         if (countUsers == 0) {
             User adminUser = new User();
-            adminUser.setEmail("admin@gmail.com");
+            adminUser.setEmail("hoidanit@gmail.com");
             adminUser.setAddress("hn");
             adminUser.setAge(25);
             adminUser.setGender(GenderEnum.MALE);

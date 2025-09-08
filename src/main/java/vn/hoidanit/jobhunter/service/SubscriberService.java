@@ -47,6 +47,10 @@ public class SubscriberService {
         return null;
     }
 
+    public Subscriber findByEmail(String email) {
+        return this.subscribersRepository.findByEmail(email);
+    }
+
     public Subscriber handleCreateSubs(Subscriber subs) {
         return this.subscribersRepository.save(subs);
     }
