@@ -114,7 +114,11 @@ public class UserService {
     }
 
     public User handleFindUserByEmail(String email) {
-        return userRepository.findUserByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Không tìm thấy email: " + email));
+        Optional<User> currentUser = this.userRepository.findUserByEmail(email);
+        if (currentUser.isPresent()) {
+            return currentUser.get();
+        }
+        return null;
     }
 
     public boolean isEmailExist(String email) {
